@@ -1,5 +1,7 @@
 import os, time, random
 
+#Hello!
+
 def map(step, row, type):
     def way(row, st, sp):
         col_st = col(st)
