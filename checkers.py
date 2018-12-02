@@ -1,5 +1,4 @@
 import os, time, random
-import doctest
 
 def map(step, row, type):
     def way(row, st, sp):
