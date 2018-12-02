@@ -1,6 +1,8 @@
 import os, time, random
 import doctest
 
+import sys
+
 def map(step, row, type):
     def way(row, st, sp):
         col_st = col(st)
