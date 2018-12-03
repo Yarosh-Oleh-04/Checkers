@@ -1,7 +1,5 @@
 import os, time, random
 
-#Hello!
-
 def map(step, row, type):
     def way(row, st, sp):
         col_st = col(st)
@@ -92,7 +90,8 @@ def map(step, row, type):
     
 ##If normal battle
     elif row[8 - int(sp[0])][col_sp] == "❇" and row[8 - int(st[0])][col_st] == type[0]:
-        if row[8 - (int(sp[0]) + int(st[0])) // 2][(col_st + col_sp) // 2] == type[2]:
+        all = row[8 - (int(sp[0]) + int(st[0])) // 2][(col_st + col_sp) // 2]
+        if all == type[2] or all == type[3]:
             rank = type[1] if int(sp[0]) == (8 if type[0] == '⚪' else 0) else type[0]
             stop(row, sp, col_sp, rank)
             medium(row, 8 - (int(sp[0]) + int(st[0])) // 2, int((col_st + col_sp) / 2))
@@ -122,49 +121,51 @@ def cm_step(row):
             if row[i][o] == '⚫' or row[i][o] == 'Ⓜ':
                 st = str(8 - i) + abc[int(o / 2)]
                 meed = '%'
-                lel = 2 if row[i][o] == '⚫' else i + 1
+                lel = 2 if row[i][o] == '⚫' else 8
                 for l in range(1, lel):
-                    if o + l * 2 > 14  or i == -1 + l: break
+                    if o + l * 2 > 14  or i - l == -1: break
                     if row[i - l][o + l * 2] == '⚪':
                         meed = '$' if meed == '%' else '$$'
-                        if row[i][o] == '⚫': l += 1
-                    if o + l * 2 > 14: break
+                        l += 1
+                        if o + l * 2 > 14: break
                     if meed == '$' and row[i - l][o + l * 2] == '⚪': break
-                    if meed == '$$' or row[i - l][o + l * 2] == '⚫' or row[i + l][o + l * 2] == 'Ⓜ': break
+                    if meed == '$$' or row[i - l][o + l * 2] == '⚫' or row[i - l][o + l * 2] == 'Ⓜ': break
                     all_steps += [st + meed + str(8 - i + l) + abc[int((o + l * 2) / 2)]]
                 meed = '%'
-                lel = 2 if row[i][o] == '⚫' else i + 1
+                lel = 2 if row[i][o] == '⚫' else 8
                 for l in range(1, lel):
-                    if o - l * 2 < 0  or i == -1 + l: break
+                    if o - l * 2 < 0  or i - l == -1: break
                     if row[i - l][o - l * 2] == '⚪':
                         meed = '$' if meed == '%' else '$$'
-                        if row[i][o] == '⚫': l += 1
-                    if o - l * 2 < 0: break
+                        l += 1
+                        if o - l * 2 < 0: break
                     if meed == '$' and row[i - l][o - l * 2] == '⚪': break
-                    if meed == '$$' or row[i - l][o - l * 2] == '⚫' or row[i + l][o - l * 2] == 'Ⓜ': break
+                    if meed == '$$' or row[i - l][o - l * 2] == '⚫' or row[i - l][o - l * 2] == 'Ⓜ': break
                     all_steps += [st + meed + str(8 - i + l) + abc[int((o - l * 2) / 2)]]
                 meed = '%'
-                lel = 2 if row[i][o] == '⚫' else i + 1
+                lel = 2 if row[i][o] == '⚫' else 8
                 for l in range(1, lel):
-                    if o + l * 2 > 14  or i == 8 - l: break
+                    if o + l * 2 > 14  or i + l == 8: break
                     if row[i + l][o + l * 2] == '⚪':
                         meed = '$' if meed == '%' else '$$'
-                        if row[i][o] == '⚫': l += 1
-                    if o + l * 2 > 14: break
+                        l += 1
+                        if o + l * 2 > 14: break
                     if meed == '$' and row[i + l][o + l * 2] == '⚪': break
                     if meed == '$$' or row[i + l][o + l * 2] == '⚫' or row[i + l][o + l * 2] == 'Ⓜ': break
                     all_steps += [st + meed + str(8 - i - l) + abc[int((o + l * 2) / 2)]]
                 meed = '%'
-                lel = 2 if row[i][o] == '⚫' else i + 1
+                lel = 2 if row[i][o] == '⚫' else 8
                 for l in range(1, lel):
-                    if o - l * 2 < 0 or i == 8 - l: break
+                    if o - l * 2 < 0 or i + l == 8: break
                     if row[i + l][o - l * 2] == '⚪':
                         meed = '$' if meed == '%' else '$$'
-                        if row[i][o] == '⚫': l += 1
-                    if o - l * 2 < 0: break
+                        l += 1
+                        if o - l * 2 < 0: break
                     if meed == '$' and row[i + l][o - l * 2] == '⚪': break
                     if meed == '$$' or row[i + l][o - l * 2] == '⚫' or row[i + l][o - l * 2] == 'Ⓜ': break
                     all_steps += [st + meed + str(8 - i - l) + abc[int((o - l * 2) / 2)]]
+                    
+    print(all_steps)
 
 ##Search top_steps
     for i in range(0, len(all_steps)):
@@ -186,14 +187,9 @@ def pix(row, num, let):
     print(let + "\n")
     
 def loading():
-    start = time.time()
-    dot = ''
+    dot = '.'
     print(' Loading', end=' ')
-    while True:
-        if time.time() - 1 - len(dot) > start:
-             dot += '.'
-             if len(dot) == 4: break
-             print(dot[0], end=' ')
+    for i in range(3): time.sleep(1); print(dot, end=' ')
 
     
 os.system('clear')
@@ -204,10 +200,10 @@ os.system('clear')
 
 row1 = "  ⚪   ⚪   ⚪   ⚪"
 row2 = "⚪   ⚪   ⚪   ⚪  "
-row3 = "  ⚪   ⚪   ⚪   ⚪"
-row4 = "❇   ❇   ❇   ❇  "
+row3 = "  ❇   ⚪   ⚪   ⚪"
+row4 = "❇   ⚪   ❇   ❇  "
 row5 = "  ❇   ❇   ❇   ❇"
-row6 = "⚫   ⚫   ⚫   ⚫  "
+row6 = "⚫   ⚫   Ⓜ   ⚫  "
 row7 = "  ⚫   ⚫   ⚫   ⚫"
 row8 = "⚫   ⚫   ⚫   ⚫  "
 num = ("  8  ", "  7  ", "  6  ", "  5  ", "  4  ", "  3  ", "  2  ", "  1  ")
